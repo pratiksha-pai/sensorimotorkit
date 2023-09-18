@@ -9,6 +9,8 @@
 - SpinView images are currently in Gray, convert to RGB
 - The frame rate is currently 150+ fps, need to reduce it to a resonable value
 - remove credentials.json from the repo
+- bypass onboard storage and write directly to disk
+- resolution of one body camera is (1200, 960) and the other is (600, 960)
 
 
 ### current tasks - low priority
