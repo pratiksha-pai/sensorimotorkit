@@ -1,1 +1,8 @@
-.
+2023-*
+.DS_Store
+allvids.tar.gz
+test*
+.vscode
+code.bkp/*
+DAvenv
+__pycache__
