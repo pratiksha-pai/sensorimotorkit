@@ -3,6 +3,7 @@ import cv2
 import numpy as np
 import time
 import os
+import pickle
 from common_utils import get_folder_count
 from rotpy.system import SpinSystem
 from rotpy.camera import CameraList
@@ -15,7 +16,8 @@ def acquire_images_common(cam_index, date_folder, fourcc, frame_rate, barrier, c
     camera = cameras.create_camera_by_index(cam_index)
     camera.init_cam()
 
-    resolution = (camera.camera_nodes.Height.get_node_value(), camera.camera_nodes.Width.get_node_value())
+    resolution = (camera.camera_nodes.Height.get_node_value(), camera.camera_nodes.Width.get_node_value()) # probably can be hardcoded
+    print(resolution)
     cam_folder = f"body_tracking/camera_{cam_index+1}"
     index = (get_folder_count(os.path.join(date_folder, cam_folder, 'raw')) -1) if get_folder_count(os.path.join(date_folder, cam_folder, 'raw')) > 0 else 0 
     # ^ this could potientially be a bug if we do not add the if else statement
@@ -26,17 +28,21 @@ def acquire_images_common(cam_index, date_folder, fourcc, frame_rate, barrier, c
     while time.time() - start_time < acquire_time:
         # barrier.wait()
         fps_start = time.time()
+        image_count = int((time.time() - start_time) * frame_rate)
         image = camera.get_next_image()
-        frame = np.array(image.get_image_data()).reshape(resolution)
-        # print(frame.shape)
-        frame = cv2.rotate(frame, cv2.ROTATE_90_COUNTERCLOCKWISE)
+        raw_data = image.get_image_data()
+
+        # frame = np.array(image.get_image_data()).reshape(resolution)
+        # frame = cv2.rotate(frame, cv2.ROTATE_90_COUNTERCLOCKWISE)
+        with open(f"{date_folder}/{cam_folder}/raw/{index}/frame_{image_count}_{cam_index+1}.pkl", "wb") as f:
+            pickle.dump(raw_data, f)
         image.release()
 
-        image_count = int((time.time() - start_time) * frame_rate)
-        try:
-            cv2.imwrite(f"{date_folder}/{cam_folder}/raw/{index}/frame_{image_count}_{cam_index+1}.png", frame)
-        except Exception:
-            break
+        
+        # try:
+        #     cv2.imwrite(f"{date_folder}/{cam_folder}/raw/{index}/frame_{image_count}_{cam_index+1}.png", frame)
+        # except Exception:
+        #     break
 
         fps_end = time.time()
         fps = 1 / (fps_end - fps_start)
@@ -50,4 +56,3 @@ def acquire_images_common(cam_index, date_folder, fourcc, frame_rate, barrier, c
     camera.release()
 
 
-# bypass onboard storage and write directly to disk
