@@ -13,15 +13,16 @@
 - resolution of one body camera is (1200, 960) and the other is (600, 960)
 - pkl files or images need not have frame_i_{camera_id} 
 - remove hardcodes for resolution, get them out of body_cam and dart_cam
-
+- add png in gitignore, kept it for testing
 
 ### current tasks - low priority
 - Add code to do actual body tracking
 - Add documentation for the code
 - Add timestamps for the images in order to sync different data streams
 - fix the conda env and add requirements.txt as a part of the github repo 
+- update readme, its referencing private repo
 
-### from before
+### from beforecd a
 adding more cameras
 set up onedrive/aws in order to push all the vids/csvs to cloud
 create a cron job to push all the data to google cloud

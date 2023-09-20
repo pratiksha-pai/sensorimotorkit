@@ -23,8 +23,7 @@ if __name__ == "__main__":
     
 
     curr_trail = (get_folder_count(os.path.join(date_folder, 'dart_tracking', 'raw')) -1) if get_folder_count(os.path.join(date_folder, 'dart_tracking', 'raw')) > 0 else 0
-    # ^ is this a bug pratiksha? thinkkkk, esssh write better logic here please
-
+    # TODO ^ is this a bug pratiksha? thinkkkk, esssh write better logic here please
 
     barrier = multiprocessing.Barrier(3)
 
@@ -43,9 +42,10 @@ if __name__ == "__main__":
     resolution_body_cam = (1200, 1920)
     resolution_dart_cam = (3, 480, 640)
 
+    print("Converting pickle files to PNG images...")
     convert_pickle_to_png(os.path.join(date_folder, 'body_tracking/camera_1/raw', str(curr_trail)), resolution_body_cam)
     convert_pickle_to_png(os.path.join(date_folder, 'body_tracking/camera_2/raw', str(curr_trail)), resolution_body_cam)
-    # convert_pickle_to_png(os.path.join(date_folder, 'dart_tracking/raw', str(curr_trail)), resolution_dart_cam)
+    # TODO convert_pickle_to_png(os.path.join(date_folder, 'dart_tracking/raw', str(curr_trail)), resolution_dart_cam)
 
 
     cv2.destroyAllWindows()

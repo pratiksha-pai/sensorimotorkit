@@ -14,11 +14,13 @@ def acquire_dart_images(cam_index, date_folder, curr_trial, frame_rate, barrier,
 
     frame_rate = 30  # Dart camera
     resolution = frame.shape[:2]
-    print(f"Dart camera resolution: {resolution}")
-
-    # index = (get_folder_count(os.path.join(date_folder, cam_folder, 'raw')) - 1) if get_folder_count(os.path.join(date_folder, cam_folder, 'raw')) > 0 else 0
 
     start_time = time.time()
+
+    # TODO need to remove all the samples parts
+    if os.path.isfile(f'samples_dart_{cam_index+1}.txt'):
+        os.remove(f'samples_dart_{cam_index+1}.txt')
+
     while time.time() - start_time < duration:
         # barrier.wait()
         fps_start = time.time()
@@ -33,13 +35,14 @@ def acquire_dart_images(cam_index, date_folder, curr_trial, frame_rate, barrier,
         try:
             with open(f"{date_folder}/{cam_folder}/raw/{curr_trial}/frame_{image_count}_{cam_index+1}.pkl", "wb") as f:
                 pickle.dump(frame, f)
-            # cv2.imwrite(f"{date_folder}/{cam_folder}/raw/{curr_trial}/frame_{image_count}_{cam_index+1}.png", frame)
         except Exception:
             break
 
         fps_end = time.time()
         fps = 1 / (fps_end - fps_start)
-        # print(f"Dart {cam_index+1} FPS: {fps}")
+        with open(f'samples_dart_{cam_index+1}.txt', 'a') as f:
+            f.write(f"{fps}\n")
+
         if cv2.waitKey(1) & 0xFF == 27:
             break
 

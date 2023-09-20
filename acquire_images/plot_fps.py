@@ -3,13 +3,13 @@ import numpy as np
 
 
 # read from test1.txt and convert to list of floats
-with open('samples_1.txt', 'r') as f:
+with open('samples_body_1.txt', 'r') as f:
     body1_fps = f.readlines()
     for i in range(len(body1_fps)):
         body1_fps[i] = float(body1_fps[i])
 
 
-with open('samples_2.txt', 'r') as f:
+with open('samples_body_2.txt', 'r') as f:
     body2_fps = f.readlines()
     for i in range(len(body2_fps)):
         body2_fps[i] = float(body2_fps[i])
@@ -25,6 +25,7 @@ y_max = max(max(body1_fps), max(body2_fps))
 plt.figure(figsize=(16, 6))
 plt.subplot(1, 2, 1)
 plt.plot(x_labels_body1, body1_fps, 'r-', label='Body 1 FPS')
+plt.scatter(x_labels_body1, body1_fps, color='r', marker='o') 
 plt.xlabel('Sample')
 plt.ylabel('FPS')
 plt.title('FPS for Body 1')
@@ -33,6 +34,7 @@ plt.grid(True)
 
 plt.subplot(1, 2, 2)
 plt.plot(x_labels_body2, body2_fps[:len(body1_fps)], 'b-', label='Body 2 FPS') 
+plt.scatter(x_labels_body2, body2_fps[:len(body1_fps)], color='b', marker='o') 
 plt.xlabel('Sample')
 plt.ylabel('FPS')
 plt.title('FPS for Body 2')
