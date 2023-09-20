@@ -12,6 +12,7 @@
 - bypass onboard storage and write directly to disk
 - resolution of one body camera is (1200, 960) and the other is (600, 960)
 - pkl files or images need not have frame_i_{camera_id} 
+- remove hardcodes for resolution, get them out of body_cam and dart_cam
 
 
 ### current tasks - low priority

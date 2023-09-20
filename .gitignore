@@ -6,4 +6,5 @@ test*
 code.bkp/*
 DAvenv
 __pycache__*
-*/__pycache__
+*.png
+samples_*

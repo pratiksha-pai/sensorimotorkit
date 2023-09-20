@@ -10,7 +10,7 @@ from rotpy.camera import CameraList
 system = SpinSystem()
 cameras = CameraList.create_from_system(system, update_cams=True, update_interfaces=True)
 
-def acquire_images_common(cam_index, date_folder, curr_trial, frame_rate, barrier, cam_folder, acquire_time):
+def acquire_images_common(cam_index, date_folder, curr_trial, frame_rate, barrier, cam_folder, duration):
     print(f"Starting body camera {cam_index+1}")
     camera = cameras.create_camera_by_index(cam_index)
     camera.init_cam()
@@ -23,7 +23,7 @@ def acquire_images_common(cam_index, date_folder, curr_trial, frame_rate, barrie
     camera.begin_acquisition()
 
     start_time = time.time()
-    while time.time() - start_time < acquire_time:
+    while time.time() - start_time < duration:
         # barrier.wait()
         fps_start = time.time()
         image_count = int((time.time() - start_time) * frame_rate)
@@ -44,7 +44,10 @@ def acquire_images_common(cam_index, date_folder, curr_trial, frame_rate, barrie
 
         fps_end = time.time()
         fps = 1 / (fps_end - fps_start)
-        print(f"Body {cam_index+1} FPS: {fps}")
+        # write fps to file test1.txt
+        with open(f'samples_{cam_index+1}.txt', 'a') as f: # but this is adding to the delay?
+            f.write(f"{fps}\n")
+        # print(f"{cam_index+1}: {fps}")
 
         if cv2.waitKey(1) & 0xFF == 27:
             break

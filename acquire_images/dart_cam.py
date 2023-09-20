@@ -4,7 +4,7 @@ import os
 import pickle
 from common_utils import get_folder_count
 
-def acquire_dart_images(cam_index, date_folder, curr_trial, frame_rate, barrier, cam_folder, acquire_time):
+def acquire_dart_images(cam_index, date_folder, curr_trial, frame_rate, barrier, cam_folder, duration):
     print(f"Starting dart camera {cam_index+1}")
     cap = cv2.VideoCapture(cam_index)
     ret, frame = cap.read()
@@ -19,7 +19,7 @@ def acquire_dart_images(cam_index, date_folder, curr_trial, frame_rate, barrier,
     # index = (get_folder_count(os.path.join(date_folder, cam_folder, 'raw')) - 1) if get_folder_count(os.path.join(date_folder, cam_folder, 'raw')) > 0 else 0
 
     start_time = time.time()
-    while time.time() - start_time < acquire_time:
+    while time.time() - start_time < duration:
         # barrier.wait()
         fps_start = time.time()
         ret, frame = cap.read()
