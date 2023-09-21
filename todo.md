@@ -14,6 +14,7 @@
 - pkl files or images need not have frame_i_{camera_id} 
 - remove hardcodes for resolution, get them out of body_cam and dart_cam
 - add png in gitignore, kept it for testing
+- probably convert this whole thing to go inorder to use its concurrency features
 
 ### current tasks - low priority
 - Add code to do actual body tracking
