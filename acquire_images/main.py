@@ -2,17 +2,11 @@ import datetime
 import multiprocessing
 import cv2
 import os
-import pickle
 import argparse
 from common_utils import init_structure, get_folder_count, convert_pickle_to_png
 from body_cam import acquire_images_common
 from dart_cam import acquire_dart_images
-import asyncio
 import cProfile
-
-
-# def wrapper_acquire_images_common(*args, **kwargs):
-#     asyncio.run(acquire_images_common(*args, **kwargs))
 
 def wrapper_acquire_images_common(*args, **kwargs):
     pr = cProfile.Profile()
@@ -44,7 +38,7 @@ if __name__ == "__main__":
     
 
     curr_trail = (get_folder_count(os.path.join(date_folder, 'dart_tracking', 'raw')) -1) if get_folder_count(os.path.join(date_folder, 'dart_tracking', 'raw')) > 0 else 0
-    # TODO ^ is this a bug pratiksha? thinkkkk, esssh write better logic here please
+    # TODO ^ is this a bug?
 
     barrier = multiprocessing.Barrier(3)
 
