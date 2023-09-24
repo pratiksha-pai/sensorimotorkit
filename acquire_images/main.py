@@ -23,6 +23,34 @@ def wrapper_acquire_dart_images(*args, **kwargs):
     pr.print_stats(sort='cumulative')
 
 
+def run(duration, date_folder, curr_trial, frame_rate_1):
+    barrier = multiprocessing.Barrier(3)
+
+    process1 = multiprocessing.Process(target=wrapper_acquire_images_common, args=(0, date_folder, curr_trial, frame_rate_1, barrier, 'body_tracking/camera_1', duration))
+    process2 = multiprocessing.Process(target=wrapper_acquire_images_common, args=(1, date_folder, curr_trial, frame_rate_1, barrier, 'body_tracking/camera_2', duration))
+    # process3 = multiprocessing.Process(target=wrapper_acquire_dart_images, args=(0, date_folder, curr_trial, 30, barrier, 'dart_tracking', duration))
+
+    process1.start()
+    process2.start()
+    # process3.start()
+
+    process1.join()
+    process2.join()
+    # process3.join()
+
+    resolution_body_cam = (1200, 1920)
+    resolution_dart_cam = (3, 480, 640)
+
+    # print("Converting pickle files to PNG images...")
+    # convert_pickle_to_png(os.path.join(date_folder, 'body_tracking/camera_1/raw', str(curr_trial)), resolution_body_cam)
+    # convert_pickle_to_png(os.path.join(date_folder, 'body_tracking/camera_2/raw', str(curr_trial)), resolution_body_cam)
+    # # TODO convert_pickle_to_png(os.path.join(date_folder, 'dart_tracking/raw', str(curr_trial)), resolution_dart_cam)
+
+
+    cv2.destroyAllWindows()
+
+
+
 if __name__ == "__main__":
 
     parser = argparse.ArgumentParser(description='Acquire images from body and dart cameras.')
@@ -37,30 +65,8 @@ if __name__ == "__main__":
     frame_rate_1 = 120.0  # Body cameras
     
 
-    curr_trail = (get_folder_count(os.path.join(date_folder, 'dart_tracking', 'raw')) -1) if get_folder_count(os.path.join(date_folder, 'dart_tracking', 'raw')) > 0 else 0
+    curr_trial = (get_folder_count(os.path.join(date_folder, 'dart_tracking', 'raw')) -1) if get_folder_count(os.path.join(date_folder, 'dart_tracking', 'raw')) > 0 else 0
     # TODO ^ is this a bug?
 
-    barrier = multiprocessing.Barrier(3)
+    run(duration, date_folder, curr_trial, frame_rate_1)
 
-    process1 = multiprocessing.Process(target=wrapper_acquire_images_common, args=(0, date_folder, curr_trail, frame_rate_1, barrier, 'body_tracking/camera_1', duration))
-    process2 = multiprocessing.Process(target=wrapper_acquire_images_common, args=(1, date_folder, curr_trail, frame_rate_1, barrier, 'body_tracking/camera_2', duration))
-    # process3 = multiprocessing.Process(target=wrapper_acquire_dart_images, args=(0, date_folder, curr_trail, 30, barrier, 'dart_tracking', duration))
-
-    process1.start()
-    process2.start()
-    # process3.start()
-
-    process1.join()
-    process2.join()
-    # process3.join()
-
-    resolution_body_cam = (1200, 1920)
-    resolution_dart_cam = (3, 480, 640)
-
-    # print("Converting pickle files to PNG images...")
-    # convert_pickle_to_png(os.path.join(date_folder, 'body_tracking/camera_1/raw', str(curr_trail)), resolution_body_cam)
-    # convert_pickle_to_png(os.path.join(date_folder, 'body_tracking/camera_2/raw', str(curr_trail)), resolution_body_cam)
-    # # TODO convert_pickle_to_png(os.path.join(date_folder, 'dart_tracking/raw', str(curr_trail)), resolution_dart_cam)
-
-
-    cv2.destroyAllWindows()

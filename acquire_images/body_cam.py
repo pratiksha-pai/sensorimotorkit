@@ -45,7 +45,6 @@ def acquire_images_common(cam_index, date_folder, curr_trial, frame_rate, barrie
 
     while time.time() - start_time < duration:
         fps_start = time.time()
-        image_count = int((time.time() - start_time) * frame_rate)
         image = camera.get_next_image()
         raw_data = image.get_image_data()
         batch.append(raw_data)
