@@ -2,7 +2,6 @@ import cv2
 import time
 import os
 import pickle
-from common_utils import get_folder_count
 
 def acquire_dart_images(cam_index, date_folder, curr_trial, frame_rate, barrier, cam_folder, duration):
     print(f"Starting dart camera {cam_index+1}")

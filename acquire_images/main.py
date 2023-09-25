@@ -2,11 +2,23 @@ import datetime
 import multiprocessing
 import cv2
 import os
+import sys
 import argparse
-from common_utils import init_structure, get_folder_count, convert_pickle_to_png
-from body_cam import acquire_images_common
-from dart_cam import acquire_dart_images
 import cProfile
+
+
+current_directory = os.path.dirname(os.path.abspath(__file__))
+parent_directory = os.path.dirname(current_directory)
+
+if parent_directory not in sys.path:
+    sys.path.append(parent_directory)
+
+# for path in sys.path:
+#     print(path)
+
+from sensorimotorkit.acquire_images.common_utils import init_structure, get_folder_count, convert_pickle_to_png
+from sensorimotorkit.acquire_images.body_cam import acquire_images_common
+from sensorimotorkit.acquire_images.dart_cam import acquire_dart_images
 
 def wrapper_acquire_images_common(*args, **kwargs):
     pr = cProfile.Profile()
@@ -22,8 +34,7 @@ def wrapper_acquire_dart_images(*args, **kwargs):
     pr.disable()
     pr.print_stats(sort='cumulative')
 
-
-def run(duration, date_folder, curr_trial, frame_rate_1):
+def util(duration, date_folder=None, curr_trial=None, frame_rate_1=120.0):
     barrier = multiprocessing.Barrier(3)
 
     process1 = multiprocessing.Process(target=wrapper_acquire_images_common, args=(0, date_folder, curr_trial, frame_rate_1, barrier, 'body_tracking/camera_1', duration))
@@ -50,23 +61,23 @@ def run(duration, date_folder, curr_trial, frame_rate_1):
     cv2.destroyAllWindows()
 
 
-
-if __name__ == "__main__":
-
+def parse_arguments():
     parser = argparse.ArgumentParser(description='Acquire images from body and dart cameras.')
     parser.add_argument('--duration', type=int, default=1, help='Duration in seconds')
-    args = parser.parse_args()
+    return parser.parse_args()
 
+def main(duration=1):
+    args = parse_arguments()
     duration = args.duration
     date_folder = os.path.join("../", datetime.datetime.now().strftime("%Y-%m-%d"))
     init_structure(date_folder)
-
-    fourcc = cv2.VideoWriter_fourcc(*"MJPG")
-    frame_rate_1 = 120.0  # Body cameras
-    
-
     curr_trial = (get_folder_count(os.path.join(date_folder, 'dart_tracking', 'raw')) -1) if get_folder_count(os.path.join(date_folder, 'dart_tracking', 'raw')) > 0 else 0
     # TODO ^ is this a bug?
+    fourcc = cv2.VideoWriter_fourcc(*"MJPG")
+    frame_rate_1 = 120.0  # Body cameras
+    util(duration, date_folder, curr_trial, frame_rate_1)
 
-    run(duration, date_folder, curr_trial, frame_rate_1)
+
+if __name__ == "__main__":
+    main(duration=1)
 
