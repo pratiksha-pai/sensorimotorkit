@@ -27,7 +27,7 @@ def init_structure(date_folder):
             index = get_folder_count(raw_path)
             os.makedirs(os.path.join(raw_path, str(index)), exist_ok=True)
 
-def convert_pickle_to_png(folder_path, resolution=(480, 640), rotation=cv2.ROTATE_90_COUNTERCLOCKWISE):
+def convert_pickle_to_png(folder_path, resolution=(480, 640), rotation=cv2.ROTATE_90_COUNTERCLOCKWISE): # TODO cv2.ROTATE_90_COUNTERCLOCKWISE should go into constants file
     """
     Convert pickle files in the folder to PNG images.
     
@@ -44,12 +44,13 @@ def convert_pickle_to_png(folder_path, resolution=(480, 640), rotation=cv2.ROTAT
         if file_name.endswith('.pkl'):
             with open(os.path.join(folder_path, file_name), 'rb') as f:
                 raw_data = pickle.load(f)
-            
-            frame = np.array(raw_data).reshape(resolution)[0]
 
+
+            frame = np.array(raw_data).reshape(resolution)
             frame = cv2.rotate(frame, rotation)
             
             png_file_name = file_name.replace('.pkl', '.png')
             cv2.imwrite(os.path.join(folder_path, png_file_name), frame)
-            # print(f"Converted {file_name} to {png_file_name}")
+            print(f"Converted {file_name} to {png_file_name}")
+            
 

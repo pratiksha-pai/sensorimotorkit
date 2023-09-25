@@ -15,6 +15,7 @@
 - remove hardcodes for resolution, get them out of body_cam and dart_cam
 - add png in gitignore, kept it for testing
 - probably convert this whole thing to go inorder to use its concurrency features
+- figure out a way to export properties from one cam to other - xml in the sdk maybe?
 
 ### current tasks - low priority
 - Add code to do actual body tracking
