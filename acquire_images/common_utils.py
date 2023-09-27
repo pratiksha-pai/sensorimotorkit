@@ -55,7 +55,9 @@ def convert_pickle_to_png(folder_path, resolution=(480, 640), rotation=cv2.ROTAT
             
             png_file_name = file_name.replace('.pkl', '.png')
             cv2.imwrite(os.path.join(folder_path, png_file_name), frame)
-            print(f"Converted {file_name} to {png_file_name}")
+            # print(f"Converted {file_name} to {png_file_name}")
+    
+    print('converted all pkl to png')
 
 def apply_pose_tracking_on_image(image_path, save_path=None):
     with mp_pose.Pose(static_image_mode=True) as pose:
@@ -81,3 +83,4 @@ def process_pkl_and_apply_pose(folder_path, resolution=(480, 640), rotation=cv2.
             image_path = os.path.join(folder_path, file_name)
             save_path = os.path.join(folder_path, f"tracked_{file_name}")
             apply_pose_tracking_on_image(image_path, save_path)
+    print('pose tracking done')
