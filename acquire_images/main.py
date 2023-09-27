@@ -16,9 +16,15 @@ if parent_directory not in sys.path:
 # for path in sys.path:
 #     print(path)
 
-from sensorimotorkit.acquire_images.common_utils import init_structure, get_folder_count, convert_pickle_to_png
-from sensorimotorkit.acquire_images.body_cam import acquire_images_common
-from sensorimotorkit.acquire_images.dart_cam import acquire_dart_images
+# from sensorimotorkit.acquire_images.common_utils import init_structure, get_folder_count, convert_pickle_to_png
+# from sensorimotorkit.acquire_images.body_cam import acquire_images_common
+# from sensorimotorkit.acquire_images.dart_cam import acquire_dart_images
+
+from common_utils import init_structure, get_folder_count, convert_pickle_to_png
+from body_cam import acquire_images_common
+from dart_cam import acquire_dart_images
+
+
 
 def wrapper_acquire_images_common(*args, **kwargs):
     pr = cProfile.Profile()
