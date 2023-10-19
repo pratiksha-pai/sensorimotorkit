@@ -1,8 +1,9 @@
 import socket
-import acquire_glove_data.Gloves_Controller as gloves
+#import acquire_glove_data.Gloves_Controller as gloves
+import Gloves_Controller as gloves
 from pynput import keyboard
 import time
-import Read_Write as rw
+#import Read_Write as rw
 
 # Set the IP address and port number to send to
 ip = gloves.get_glove_ip()
@@ -38,4 +39,6 @@ listener.stop()
 path = "C:/Users/Data acquisition/Desktop/Data"
 name = "testing.csv"
 
-rw.save_array_to_csv(output,path,name)
+print(output)
+
+#rw.save_array_to_csv(output,path,name)

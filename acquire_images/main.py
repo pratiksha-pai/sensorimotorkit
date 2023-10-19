@@ -31,29 +31,29 @@ def wrapper_acquire_images_common(*args, **kwargs):
     pr.enable()
     acquire_images_common(*args, **kwargs)
     pr.disable()
-    pr.print_stats(sort='cumulative')
+    # pr.print_stats(sort='cumulative')
 
 def wrapper_acquire_dart_images(*args, **kwargs):
     pr = cProfile.Profile()
     pr.enable()
     acquire_dart_images(*args, **kwargs)
     pr.disable()
-    pr.print_stats(sort='cumulative')
+    # pr.print_stats(sort='cumulative')
 
 def util(duration, date_folder=None, curr_trial=None, frame_rate_1=120.0):
     barrier = multiprocessing.Barrier(3)
 
     process1 = multiprocessing.Process(target=wrapper_acquire_images_common, args=(0, date_folder, curr_trial, frame_rate_1, barrier, 'body_tracking/camera_1', duration))
     process2 = multiprocessing.Process(target=wrapper_acquire_images_common, args=(1, date_folder, curr_trial, frame_rate_1, barrier, 'body_tracking/camera_2', duration))
-    # process3 = multiprocessing.Process(target=wrapper_acquire_dart_images, args=(0, date_folder, curr_trial, 30, barrier, 'dart_tracking', duration))
+    process3 = multiprocessing.Process(target=wrapper_acquire_dart_images, args=(0, date_folder, curr_trial, 30, barrier, 'dart_tracking', duration))
 
     process1.start()
     process2.start()
-    # process3.start()
+    process3.start()
 
     process1.join()
     process2.join()
-    # process3.join()
+    process3.join()
 
     resolution_body_cam = (1200, 1920)
     resolution_dart_cam = (3, 480, 640)
@@ -69,10 +69,11 @@ def util(duration, date_folder=None, curr_trial=None, frame_rate_1=120.0):
 
 def parse_arguments():
     parser = argparse.ArgumentParser(description='Acquire images from body and dart cameras.')
-    parser.add_argument('--duration', type=int, default=1, help='Duration in seconds')
+    parser.add_argument('--duration', type=int, default=10, help='Duration in seconds')
     return parser.parse_args()
 
-def main(duration=1):
+def main(duration=10):
+    print(f'duration is {duration}')
     args = parse_arguments()
     duration = args.duration
     date_folder = os.path.join("../", datetime.datetime.now().strftime("%Y-%m-%d"))
@@ -81,9 +82,11 @@ def main(duration=1):
     # TODO ^ is this a bug?
     fourcc = cv2.VideoWriter_fourcc(*"MJPG")
     frame_rate_1 = 120.0  # Body cameras
+    duration = 10 # TODO need to fix this issue
+    print(f'duration is {duration}')
     util(duration, date_folder, curr_trial, frame_rate_1)
 
 
 if __name__ == "__main__":
-    main(duration=1)
+    main(duration=10)
 

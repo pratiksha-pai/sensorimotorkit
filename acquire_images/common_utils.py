@@ -51,7 +51,8 @@ def convert_pickle_to_png(folder_path, resolution=(480, 640), rotation=cv2.ROTAT
                 raw_data = pickle.load(f)
 
             frame = np.array(raw_data).reshape(resolution)
-            frame = cv2.rotate(frame, rotation)
+            if len(resolution) == 2:
+                frame = cv2.rotate(frame, rotation)
             
             png_file_name = file_name.replace('.pkl', '.png')
             cv2.imwrite(os.path.join(folder_path, png_file_name), frame)
