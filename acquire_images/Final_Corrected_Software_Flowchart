@@ -1,0 +1,43 @@
+digraph CorrectedSoftwareFlowchart {
+	node [fillcolor=lightyellow style=filled]
+	size="10,10"
+	A [label="Main Process"]
+	B [label="Sync Block"]
+	C [label="Start All Sub-processes"]
+	D [label="Stop Acquisition"]
+	E [label="In-memory Storage"]
+	F [label="End of Session"]
+	G [label="Post-processing"]
+	C1 [label="Body Cam 1"]
+	C2 [label="Body Cam 2"]
+	C3 [label="Dart Cam"]
+	C4 [label="EMG Data"]
+	C5 [label="EEG Data"]
+	C6 [label="Motion Gloves"]
+	C7 [label="Eye Tracking"]
+	G1 [label="PKL -> Images"]
+	G2 [label="Apply Tracking"]
+	A -> B
+	B -> C
+	C -> E
+	D -> E
+	E -> F
+	F -> G
+	G1 -> G2
+	C -> C1
+	C -> C2
+	C -> C3
+	C -> C4
+	C -> C5
+	C -> C6
+	C -> C7
+	D -> C1
+	D -> C2
+	D -> C3
+	D -> C4
+	D -> C5
+	D -> C6
+	D -> C7
+	G -> G1
+	G -> G2
+}
