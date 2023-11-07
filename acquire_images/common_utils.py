@@ -44,7 +44,7 @@ def convert_pickle_to_png(folder_path, resolution=(480, 640), rotation=cv2.ROTAT
     Returns:
         None
     """
-    # print('/Users/Data\ acquisition/2023-10-19/body_tracking/camera_1/raw/10')
+    print('folder path in utils is', folder_path)
     for file_name in os.listdir(folder_path):
         if file_name.endswith('.pkl'):
             with open(os.path.join(folder_path, file_name), 'rb') as f:
